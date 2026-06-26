@@ -1,0 +1,50 @@
+# FCFS Scheduling
+n = int(input("Enter number of processes: "))
+
+p = ["P"+str(i+1) for i in range(n)]
+at = list(map(int, input("Enter AT: ").split()))
+bt = list(map(int, input("Enter BT: ").split()))
+
+# Sort according to Arrival Time
+for i in range(n):
+    for j in range(i+1, n):
+        if at[i] > at[j]:
+            at[i], at[j] = at[j], at[i]
+            bt[i], bt[j] = bt[j], bt[i]
+            p[i], p[j] = p[j], p[i]
+
+ct = [0]*n
+tat = [0]*n
+wt = [0]*n
+
+# Gantt Chart
+print("\nFCFS Gantt Chart:")
+
+time = 0
+print("0", end="")
+
+for i in range(n):
+
+    if time < at[i]:
+        time = at[i]
+
+    time += bt[i]
+    ct[i] = time
+
+    print("-> ", p[i], " -> ", time, end="")
+
+print()
+
+# Calculate TAT and WT
+for i in range(n):
+    tat[i] = ct[i] - at[i]
+    wt[i] = tat[i] - bt[i]
+
+# Output Table
+print("\nProcess\tAT\tBT\tCT\tTAT\tWT")
+
+for i in range(n):
+    print(f"{p[i]}\t\t{at[i]}\t{bt[i]}\t{ct[i]}\t{tat[i]}\t{wt[i]}")
+
+print("\nAverage TAT =", sum(tat)/n)
+print("Average WT  =", sum(wt)/n)
