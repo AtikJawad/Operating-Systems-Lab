@@ -1,0 +1,29 @@
+n = int(input("Enter number of processes: "))
+
+p = ["P"+str(i+1) for i in range(n)]
+bt = list(map(int, input("Enter BT: ").split()))
+pr = list(map(int, input("Enter Priority: ").split()))
+
+for i in range(n):
+    for j in range(i+1, n):
+        if pr[i] > pr[j]:
+            pr[i], pr[j] = pr[j], pr[i]
+            bt[i], bt[j] = bt[j], bt[i]
+            p[i], p[j] = p[j], p[i]
+
+wt = [0]*n
+for i in range(1, n):
+    wt[i] = wt[i-1] + bt[i-1]
+    
+
+Starting_time = 0
+
+
+print("\n\nPriority Process Burst Starting Ending Waiting")
+for i in range(n):
+    Finishing_time = Starting_time + bt[i]
+    print(pr[i],"\t", p[i],"\t", bt[i],"\t", Starting_time,"\t",Finishing_time,"\t",   wt[i])
+    Starting_time = Finishing_time
+    
+
+print("\nAvg waiting time = ", sum(wt)/n, end="\n")
